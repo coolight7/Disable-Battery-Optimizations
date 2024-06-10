@@ -111,8 +111,4 @@ public class Samsung extends DeviceAbstract {
         return null;
     }
 
-    @Override
-    public int getHelpImagePowerSaving() {
-        return R.drawable.samsung;
-    }
 }

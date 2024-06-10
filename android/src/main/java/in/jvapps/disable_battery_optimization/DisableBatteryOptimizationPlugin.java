@@ -12,6 +12,8 @@ import in.jvapps.disable_battery_optimization.managers.KillerManager;
 import java.util.List;
 
 import in.jvapps.disable_battery_optimization.utils.BatteryOptimizationUtil;
+import in.jvapps.disable_battery_optimization.utils.BatteryOptimizationUtil.OnBatteryOptimizationAccepted;
+import in.jvapps.disable_battery_optimization.utils.BatteryOptimizationUtil.OnBatteryOptimizationCanceled;
 import in.jvapps.disable_battery_optimization.utils.PrefKeys;
 import in.jvapps.disable_battery_optimization.utils.PrefUtils;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -22,6 +24,8 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry;
+
+import androidx.annotation.Nullable;
 
 /**
  * DisableBatteryOptimizationPlugin
@@ -37,11 +41,6 @@ public class DisableBatteryOptimizationPlugin implements FlutterPlugin, Activity
     private static final int REQUEST_DISABLE_BATTERY_OPTIMIZATIONS = 2244;
     private final String TAG = "BO:DisableOptimization";
     private static final String CHANNEL_NAME = "in.jvapps.disable_battery_optimization";
-
-    private String autoStartTitle;
-    private String autoStartMessage;
-    private String manBatteryTitle;
-    private String manBatteryMessage;
 
 
     // This static function is optional and equivalent to onAttachedToEngine. It supports the old
@@ -78,16 +77,8 @@ public class DisableBatteryOptimizationPlugin implements FlutterPlugin, Activity
         switch (call.method) {
             case "showEnableAutoStart":
                 try {
-                    List arguments = (List) call.arguments;
-                    if (arguments != null) {
-                        autoStartTitle = String.valueOf(arguments.get(0));
-                        autoStartMessage = String.valueOf(arguments.get(1));
-                        showAutoStartEnabler(() -> setManAutoStart(true), () -> setManAutoStart(false));
-                        result.success(true);
-                    } else {
-                        Log.e(TAG, "Unable to request enableAutoStart. Arguments are null");
-                        result.success(false);
-                    }
+                    showAutoStartEnabler(() -> setManAutoStart(true), () -> setManAutoStart(false));
+                    result.success(true);
                 } catch (Exception ex) {
                     Log.e(TAG, "Exception in showEnableAutoStart. " + ex.toString());
                     result.success(false);
@@ -95,16 +86,8 @@ public class DisableBatteryOptimizationPlugin implements FlutterPlugin, Activity
                 break;
             case "showDisableManBatteryOptimization":
                 try {
-                    List arguments = (List) call.arguments;
-                    if (arguments != null) {
-                        manBatteryTitle = String.valueOf(arguments.get(0));
-                        manBatteryMessage = String.valueOf(arguments.get(1));
-                        showManBatteryOptimizationDisabler(false);
-                        result.success(true);
-                    } else {
-                        Log.e(TAG, "Unable to request disable manufacturer battery optimization. Arguments are null");
-                        result.success(false);
-                    }
+                    showManBatteryOptimizationDisabler(false);
+                    result.success(true);
                 } catch (Exception ex) {
                     Log.e(TAG, "Exception in showDisableManBatteryOptimization. " + ex.toString());
                     result.success(false);
@@ -121,18 +104,8 @@ public class DisableBatteryOptimizationPlugin implements FlutterPlugin, Activity
                 break;
             case "disableAllOptimizations":
                 try {
-                    List arguments = (List) call.arguments;
-                    if (arguments != null) {
-                        autoStartTitle = String.valueOf(arguments.get(0));
-                        autoStartMessage = String.valueOf(arguments.get(1));
-                        manBatteryTitle = String.valueOf(arguments.get(2));
-                        manBatteryMessage = String.valueOf(arguments.get(3));
-                        handleIgnoreAllBatteryPermission();
-                        result.success(true);
-                    } else {
-                        Log.e(TAG, "Unable to request disable all optimizations. Arguments are null");
-                        result.success(false);
-                    }
+                    handleIgnoreAllBatteryPermission();
+                    result.success(true);
                 } catch (Exception ex) {
                     Log.e(TAG, "Exception in disableAllOptimizations. " + ex.toString());
                     result.success(false);
@@ -189,13 +162,12 @@ public class DisableBatteryOptimizationPlugin implements FlutterPlugin, Activity
         channel.setMethodCallHandler(null);
     }
 
-    private void showAutoStartEnabler(@NonNull final BatteryOptimizationUtil.OnBatteryOptimizationAccepted positiveCallback,
-                                      @NonNull final BatteryOptimizationUtil.OnBatteryOptimizationCanceled negativeCallback) {
+    private void showAutoStartEnabler(
+        @Nullable final OnBatteryOptimizationAccepted positiveCallback,
+        @Nullable final OnBatteryOptimizationCanceled negativeCallback) {
         BatteryOptimizationUtil.showBatteryOptimizationDialog(
                 mActivity,
                 KillerManager.Actions.ACTION_AUTOSTART,
-                autoStartTitle,
-                autoStartMessage,
                 positiveCallback,
                 negativeCallback
         );
@@ -205,8 +177,6 @@ public class DisableBatteryOptimizationPlugin implements FlutterPlugin, Activity
         BatteryOptimizationUtil.showBatteryOptimizationDialog(
                 mActivity,
                 KillerManager.Actions.ACTION_POWERSAVING,
-                manBatteryTitle,
-                manBatteryMessage,
                 () -> {
                     setManBatteryOptimization(true);
                     if (isRequestNativeBatteryOptimizationDisabler) {

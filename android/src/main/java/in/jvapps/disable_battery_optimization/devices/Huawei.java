@@ -140,16 +140,6 @@ public class Huawei extends DeviceAbstract {
         return stringBuilder.toString();
     }
 
-    @Override
-    public int getHelpImagePowerSaving() {
-        return R.drawable.huawei_powersaving;
-    }
-
-    @Override
-    public int getHelpImageAutoStart() {
-        return R.drawable.huawei_autostart;
-    }
-
     @SuppressWarnings("unused")
     private List<ComponentName> getComponentNameAutoStart(Context context) {
         int mVersion = getHuaweiSystemManagerVersion(context);

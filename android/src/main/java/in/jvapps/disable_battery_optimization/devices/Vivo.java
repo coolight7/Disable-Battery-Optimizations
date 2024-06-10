@@ -92,15 +92,6 @@ public class Vivo extends DeviceAbstract {
         return null;
     }
 
-    @Override
-    public int getHelpImagePowerSaving() {
-        return R.drawable.vivo_power_save;
-    }
-
-    @Override
-    public int getHelpImageAutoStart() {
-        return R.drawable.vivo_auto_start;
-    }
 /*
     @Override
     public List<ComponentName> getAutoStartSettings(Context context) {

@@ -13,7 +13,6 @@ import android.os.PowerManager;
 import androidx.annotation.Nullable;
 
 import in.jvapps.disable_battery_optimization.managers.KillerManager;
-import in.jvapps.disable_battery_optimization.ui.DialogKillerManagerBuilder;
 
 
 public class BatteryOptimizationUtil {
@@ -50,33 +49,11 @@ public class BatteryOptimizationUtil {
     public static void showBatteryOptimizationDialog(
             final Context context,
             final KillerManager.Actions action,
-            @Nullable String titleMessage,
-            final String contentMessage,
             @Nullable final OnBatteryOptimizationAccepted positiveCallback,
             @Nullable final OnBatteryOptimizationCanceled negativeCallback) {
-
         if (KillerManager.isActionAvailable(context, action)) {
-            if (titleMessage == null) {
-                titleMessage = String.format("Your Device %s %s has additional battery optimization", Build.MANUFACTURER, Build.MODEL);
-            }
-
-            new DialogKillerManagerBuilder()
-                    .setContext(context)
-                    .setDontShowAgain(false)
-                    .setTitleMessage(titleMessage)
-                    .setContentMessage(contentMessage)
-                    .setPositiveMessage("Ok")
-                    //.setNegativeMessage("Will Give Later")
-                    .setOnPositiveCallback(view -> {
-                        if (positiveCallback != null)
-                            positiveCallback.onBatteryOptimizationAccepted();
-                    })
-                    .setOnNegativeCallback((view) -> {
-                        if (negativeCallback != null)
-                            negativeCallback.onBatteryOptimizationCanceled();
-                    })
-                    .setAction(action)
-                    .show();
+            if (positiveCallback != null)
+                positiveCallback.onBatteryOptimizationAccepted();
         } else {
             if (positiveCallback != null)
                 positiveCallback.onBatteryOptimizationAccepted();

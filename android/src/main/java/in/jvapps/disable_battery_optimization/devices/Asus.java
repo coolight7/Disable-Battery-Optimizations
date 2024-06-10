@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import androidx.annotation.DrawableRes;
 
 
 import in.jvapps.disable_battery_optimization.R;
@@ -72,17 +71,5 @@ public class Asus extends DeviceAbstract {
     @Override
     public String getExtraDebugInformations(Context context) {
         return null;
-    }
-
-    @Override
-    @DrawableRes
-    public int getHelpImageAutoStart(){
-        return R.drawable.asus_autostart;
-    }
-
-    @Override
-    @DrawableRes
-    public int getHelpImageNotification(){
-        return R.drawable.asus_notification;
     }
 }

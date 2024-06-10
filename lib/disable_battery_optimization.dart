@@ -6,16 +6,13 @@ class DisableBatteryOptimization {
   static const MethodChannel _channel =
       const MethodChannel('in.jvapps.disable_battery_optimization');
 
-  static Future<bool?> showEnableAutoStartSettings(
-      String dialogTitle, String dialogBody) async {
-    return await _channel.invokeMethod(
-        'showEnableAutoStart', <dynamic>[dialogTitle, dialogBody]);
+  static Future<bool?> showEnableAutoStartSettings() async {
+    return await _channel.invokeMethod('showEnableAutoStart');
   }
 
-  static Future<bool?> showDisableManufacturerBatteryOptimizationSettings(
-      String dialogTitle, String dialogBody) async {
-    return await _channel.invokeMethod('showDisableManBatteryOptimization',
-        <dynamic>[dialogTitle, dialogBody]);
+  static Future<bool?>
+      showDisableManufacturerBatteryOptimizationSettings() async {
+    return await _channel.invokeMethod('showDisableManBatteryOptimization');
   }
 
   static Future<bool?> showDisableBatteryOptimizationSettings() async {
