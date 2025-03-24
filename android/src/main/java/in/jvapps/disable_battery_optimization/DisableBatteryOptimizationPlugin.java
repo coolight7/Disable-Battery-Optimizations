@@ -115,12 +115,6 @@ public class DisableBatteryOptimizationPlugin implements FlutterPlugin, Activity
     }
 
     @Override
-    public void onAttachedToEngine(FlutterPluginBinding binding) {
-        channel = new MethodChannel(binding.getBinaryMessenger(), CHANNEL_NAME);
-        mContext = binding.getApplicationContext();
-    }
-
-    @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         channel.setMethodCallHandler(null);
     }
