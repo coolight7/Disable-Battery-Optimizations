@@ -41,7 +41,26 @@ public class DisableBatteryOptimizationPlugin implements FlutterPlugin, Activity
     private final String TAG = "BO:DisableOptimization";
     private static final String CHANNEL_NAME = "in.jvapps.disable_battery_optimization";
 
+    private String autoStartTitle;
+    private String autoStartMessage;
+    private String manBatteryTitle;
+    private String manBatteryMessage;
 
+    private DisableBatteryOptimizationPlugin(Activity activity, Context context) {
+        if (activity != null)
+            mActivity = activity;
+        if (context != null)
+            mContext = context;
+    }
+
+    /**
+     * Default constructor for DisableBatteryOptimizationPlugin.
+     *
+     * <p>Use this constructor when adding this plugin to an app with v2 embedding.
+     */
+    public DisableBatteryOptimizationPlugin() {
+    }
+    
     // This static function is optional and equivalent to onAttachedToEngine. It supports the old
     // pre-Flutter-1.12 Android projects. You are encouraged to continue supporting
     // plugin registration via this function while apps migrate to use the new Android APIs
